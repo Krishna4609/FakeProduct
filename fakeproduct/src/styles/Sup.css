@@ -1,0 +1,94 @@
+.sup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.sup-inner-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.808);
+}
+
+.sup-form-1,
+.sup-form-2 {
+  flex: 1;
+  padding: 10px;
+}
+
+.sup-form-1 input[type="number"],
+.sup-form-2 input[type="text"],
+.sup-form-1 input[type="text"],
+.sup-form-1 input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.sup-form-1 input[type="file"] {
+  background-color: #5c88e067;
+  border-radius: 6px;
+  margin-top: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.sup-form-1 input[type="file"]:hover {
+  background-color: #4367b046;
+}
+
+.verify-btn,
+.add-sup-details {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #3498db;
+  color: #fff;
+}
+
+.verify-btn:hover,
+.add-sup-details:hover {
+  background-color: #2980b9;
+}
+
+.sup-form-2 input,
+.sup-form-1 input {
+  margin-top: 2px;
+  border-radius: 3px;
+  border: none;
+}
+
+.sup-form-2 label {
+  font-weight: bold;
+}
+.sup-form-1 label {
+  font-weight: bold;
+}
+
+.sup-form-2 input:focus {
+  outline: 0;
+}
+.sup-form-1 input:focus {
+  outline: 0;
+}
+
+.sup-form-1 label[for="sup-qr"] {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.sup-form-1 label[for="sup-qr"]:hover {
+  background-color: #2980b9;
+}

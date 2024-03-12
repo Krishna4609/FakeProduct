@@ -1,0 +1,62 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  font-family: Arial, sans-serif;
+}
+
+.log-form {
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.815);
+  width: 380px;
+  text-align: center;
+}
+
+.log-form label {
+  display: block;
+  margin-bottom: 6px;
+  margin-right: 210px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.log-form input[type="text"],
+.log-form input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.log-form input[type="text"]:focus,
+.log-form input[type="password"]:focus {
+  outline: none;
+  border-color: #5c87e0;
+}
+
+.log-form .siginbtn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #5c87e0;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.log-form .siginbtn:hover {
+  background-color: #4368b0;
+}
+
+
+
+.spacing{
+  margin: 10px;
+}
