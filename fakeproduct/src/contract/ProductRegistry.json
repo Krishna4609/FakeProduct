@@ -1,0 +1,223 @@
+{
+    "abi":[
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "previousOwner",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "OwnershipTransferred",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "manufacturerLocation",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "manufacturerName",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "supplierLocation",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "supplierName",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "description",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "address",
+					"name": "owner",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "supplierId",
+					"type": "string"
+				}
+			],
+			"name": "ProductAdded",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "manufacturerLocation",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "manufacturerName",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "supplierId",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "description",
+					"type": "string"
+				}
+			],
+			"name": "addManufacturerDetails",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "supplierLocation",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "supplierName",
+					"type": "string"
+				}
+			],
+			"name": "addSupplierDetails",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "",
+					"type": "string"
+				}
+			],
+			"name": "products",
+			"outputs": [
+				{
+					"internalType": "string",
+					"name": "manufacturerLocation",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "manufacturerName",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "supplierLocation",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "supplierName",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "description",
+					"type": "string"
+				},
+				{
+					"internalType": "address",
+					"name": "owner",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "supplierId",
+					"type": "string"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				},
+				{
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "transferOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}
+	]
+}

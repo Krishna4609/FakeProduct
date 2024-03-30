@@ -24,6 +24,8 @@ function RegMan() {
       );
   
       if (response.data !== "User Already exists. Please try again.") {
+        //RENDER NEW PAGE FOR SHOING ID AND SUCCESSFUL REGISTREATION
+        alert(`Registration Successful! Your Manufacturer ID : ${response.data.manufacturerId}`)
         navigate("/main");
       } else {
         setMessage("Duplicate username. Please choose a different username.");

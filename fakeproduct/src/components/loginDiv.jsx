@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
+
+
 function LoginDiv({ toggler }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +19,8 @@ function LoginDiv({ toggler }) {
         .then((response) => {
           console.log(response);
           if (response.data === "Success") {
-            navigate("/main/manufacturer");
+            navigate("/main/manufacturer", { state: { username, password } });
+
           } else {
             setMessage(response.data);
           }
@@ -31,7 +34,7 @@ function LoginDiv({ toggler }) {
         .then((response) => {
           console.log(response);
           if (response.data === "Success") {
-            navigate("/main/supplier");
+            navigate("/main/supplier",{ state: { username, password } });
           } else {
             setMessage(response.data);
           }
@@ -47,6 +50,8 @@ function LoginDiv({ toggler }) {
       navigate("/main/regsupplier");
     }
   };
+
+  
 
   return (
     <>

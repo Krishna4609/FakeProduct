@@ -24,6 +24,7 @@ function RegMan() {
       );
   
       if (response.data !== "User Already exists. Please try again.") {
+        alert(`Registration Successful! Your SupplierId is ${response.data.supplierId}`)
         navigate("/main");
       } else {
         setMessage("Duplicate username. Please choose a different username.");

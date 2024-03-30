@@ -1,78 +1,124 @@
-require("dotenv").config();
 const express = require("express");
-// import express from "express"; // to use this we need type module in json file
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-const port = 4000;
+const port = process.env.PORT || 4000;
+const ManufacturerModel = require("./models/manufacturer");
+const SupplierModel = require("./models/supplier");
+
 app.use(express.json());
 app.use(cors());
 
 mongoose.connect("mongodb://127.0.0.1:27017/fakeproduct");
 
-const ManufacturerModel = require("./models/manufacturer");
-const SupplierModel = require("./models/supplier");
-
-app.post("/manufacturersign", (req, res) => {
-  ManufacturerModel.findOne({ username: req.body.username }).then((user) => {
-    if (user) {
-      res.json("User Already exists. Please try again.");
-    } else {
-      ManufacturerModel.create(req.body)
-        .then((manufacturer) => res.status(200).json(manufacturer))
-        .catch((err) => res.status(500).json({ error: err.message }));
+// Routes for Manufacturer Registration
+app.post("/manufacturersign", async (req, res) => {
+  try {
+    const existingUser = await ManufacturerModel.findOne({ username: req.body.username });
+    if (existingUser) {
+      return res.json("User Already exists. Please try again.");
     }
-  });
+
+    const manufacturer = await ManufacturerModel.create(req.body);
+    res.json({ manufacturerId: manufacturer.manufacturerId });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-
-app.post("/suppliersign", (req, res) => {
-  SupplierModel.findOne({ username: req.body.username }).then((user) => {
-    if (user) {
-      res.json("User Already exists. Please try again.");
-    } else {
-      SupplierModel.create(req.body)
-        .then((suplier) => res.json(suplier))
-        .catch((err) => res.json(err));
+// Routes for Supplier Registration
+app.post("/suppliersign", async (req, res) => {
+  try {
+    const existingUser = await SupplierModel.findOne({ username: req.body.username });
+    if (existingUser) {
+      return res.json("User Already exists. Please try again.");
     }
-  });
+
+    const supplier = await SupplierModel.create(req.body);
+    res.json({ supplierId: supplier.supplierId }); 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.post("/manufacturer", (req, res) => {
-  const { username, password } = req.body;
-  ManufacturerModel.findOne({ username: username })
-    .then((user) => {
-      if (user) {
-        if (user.password === password) {
-          res.json("Success");
-        } else {
-          res.json("The password is incorrect");
-        }
-      } else {
-        res.json("No user Found");
-      }
-    })
-    .catch((err) => res.status(500).json({ error: err.message }));
+// Routes for Manufacturer Login
+app.post("/manufacturer", async (req, res) => {
+  try {
+    const user = await ManufacturerModel.findOne({ username: req.body.username });
+    if (!user) {
+      return res.json("No user Found");
+    }
+
+    if (user.password === req.body.password) {
+      res.json("Success");
+    } else {
+      res.json("The password is incorrect");
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.post("/supplier", (req, res) => {
-  const { username, password } = req.body;
-  SupplierModel.findOne({ username: username })
-    .then((user) => {
-      if (user) {
-        if (user.password === password) {
-          res.json("Success");
-        } else {
-          res.json("The password is incorrect");
-        }
-      } else {
-        res.json("No user Found");
-      }
-    })
-    .catch((err) => res.status(500).json({ error: err.message }));
+// Routes for Supplier Login
+app.post("/supplier", async (req, res) => {
+  try {
+    const user = await SupplierModel.findOne({ username: req.body.username });
+    if (!user) {
+      return res.json("No user Found");
+    }
+
+    if (user.password === req.body.password) {
+      res.json("Success");
+    } else {
+      res.json("The password is incorrect");
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-//during production the port will be taken from env file for sure
-app.listen(process.env.PORT || port, () => {
-  console.log("running");
+app.post('/supDetails', async (req,res)=>{
+  try {
+    const user = await SupplierModel.findOne({username: req.body.username})
+    if(user){
+      res.json(user)
+    }
+    else{
+      res.json("Invalid Request!")
+    }
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
+
+app.post('/manById', async (req,res)=>{
+  try{
+    const user = await ManufacturerModel.findOne({manufacturerId:req.body.id})
+    if(user){
+      res.json(user)
+    }
+    else{
+      res.json("Invalid Manufacturer ID")
+    }
+  }catch(err){
+    res.json(err)
+  }
+})
+
+app.post('/supById', async (req,res)=>{
+  try{
+    const user = await SupplierModel.findOne({supplierId:req.body.id})
+    if(user){
+      res.json(user)
+    }
+    else{
+      res.json("Invalid Supplier ID")
+    }
+  }catch(err){
+    res.json(err)
+  }
+})
+
+app.listen(port, () => {
+  console.log("Server is running on port", port);
 });
