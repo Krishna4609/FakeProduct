@@ -91,6 +91,20 @@ app.post('/supDetails', async (req,res)=>{
   }
 })
 
+app.post('/manDetails', async (req,res)=>{
+  try {
+    const user = await ManufacturerModel.findOne({username: req.body.username})
+    if(user){
+      res.json(user)
+    }
+    else{
+      res.json("Invalid Request!")
+    }
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
+
 app.post('/manById', async (req,res)=>{
   try{
     const user = await ManufacturerModel.findOne({manufacturerId:req.body.id})
@@ -118,6 +132,23 @@ app.post('/supById', async (req,res)=>{
     res.json(err)
   }
 })
+
+// Route to fetch unique selling locations of all suppliers
+app.get("/supplier-locations", async (req, res) => {
+  try {
+    const locations = await SupplierModel.aggregate([
+      { $unwind: "$sellingLocations" }, // Unwind the sellingLocations array
+      { $group: { _id: "$sellingLocations" } }, // Group by sellingLocations field
+      { $project: { _id: 0, location: "$_id" } }, // Project to rename _id to location
+    ]);
+
+    const uniqueLocations = locations.map((location) => location.location);
+    res.json(uniqueLocations);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 app.listen(port, () => {
   console.log("Server is running on port", port);

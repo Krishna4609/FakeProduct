@@ -5,7 +5,9 @@ const SupplierSchema = new Schema({
   username: { type: String, required: true, min: 4, unique: true },
   password: { type: String, required: true },
   walletAddr: { type: String, required: true },
-  supplierId: { type: String, unique: true }
+  supplierId: { type: String, unique: true },
+  supplierName: { type: String, required: true },
+  sellingLocations: [{ type: String }] // Array of selling locations
 });
 
 SupplierSchema.pre("save", async function(next) {

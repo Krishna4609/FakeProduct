@@ -19,6 +19,7 @@ function LoginDiv({ toggler }) {
         .then((response) => {
           console.log(response);
           if (response.data === "Success") {
+            localStorage.setItem("sessionToken",username)
             navigate("/main/manufacturer", { state: { username, password } });
 
           } else {
@@ -34,6 +35,7 @@ function LoginDiv({ toggler }) {
         .then((response) => {
           console.log(response);
           if (response.data === "Success") {
+            localStorage.setItem("sessionToken",username)
             navigate("/main/supplier",{ state: { username, password } });
           } else {
             setMessage(response.data);

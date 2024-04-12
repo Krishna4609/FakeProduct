@@ -4,8 +4,9 @@ import Web3 from "web3"; // Import Web3 library
 import ProductRegistryABI from "../contract/ProductRegistry.json";
 import { QrReader } from "react-qr-reader"; // Import QrReader from 'react-qr-reader'
 import QrCode from "qrcode-reader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { isAuthenticated } from "../globalRoutes/authUtil";
 
 function Supplier() {
   const location = useLocation();
@@ -26,28 +27,38 @@ function Supplier() {
 
   const [choice, setChoice] = useState("");
   const [id, setId] = useState("");
+  const navigate = useNavigate();
+  const [ownerWalletAddr, setOwnerWalletAddr] = useState(""); // Owner(Manufacturer Addresss)
+  const [walletAddr, setWalletAddr] = useState(""); //Logged IN Supplier Address
+  const [isAuth, setIsAuth] = useState(false);
 
-  const [ownerWalletAddr, setOwnerWalletAddr] = useState("");
-
+  const [sellingLocations, setSellingLocations] = useState([]);
   // Initialize Web3 and contract instance
   useEffect(() => {
-    const initWeb3 = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
-        await window.ethereum.enable();
-        setWeb3(web3Instance);
-        const contractAddress = "0xa1FaBEaD73837BB951dE487319C12D491D98bD0D";
-        const instance = new web3Instance.eth.Contract(
-          ProductRegistryABI.abi,
-          contractAddress
-        );
-        setContractInstance(instance);
-      } else {
-        console.log("Please install MetaMask!");
-      }
-    };
-    initWeb3();
-    fetchCurrentUser();
+    if (isAuthenticated() === username) {
+      console.log(isAuthenticated());
+      setIsAuth(true);
+      const initWeb3 = async () => {
+        if (window.ethereum) {
+          const web3Instance = new Web3(window.ethereum);
+          await window.ethereum.enable();
+          setWeb3(web3Instance);
+          const contractAddress = "0xa1FaBEaD73837BB951dE487319C12D491D98bD0D";
+          const instance = new web3Instance.eth.Contract(
+            ProductRegistryABI.abi,
+            contractAddress
+          );
+          setContractInstance(instance);
+        } else {
+          console.log("Please install MetaMask!");
+        }
+      };
+      initWeb3();
+      fetchCurrentUser();
+    }else{
+      alert("Please LogIn Using the portal");
+      navigate("/main");
+    } 
   }, []);
 
   // Function to handle QR code scan
@@ -70,6 +81,9 @@ function Supplier() {
         username,
       });
       setSupDetails(response.data);
+      setWalletAddr(response.data.walletAddr);
+      console.log(response.data);
+      setSellingLocations(response.data.sellingLocations);
     } catch (error) {
       console.log(error);
     }
@@ -103,15 +117,21 @@ function Supplier() {
 
       // Transfer ownership after adding supplier details
       await contractInstance.methods
-        .transferOwnership(productId, window.ethereum.selectedAddress)
+        .transferOwnership(productId, walletAddr)
         .send({ from: ownerWalletAddr });
 
       // Call the smart contract method to add supplier details
       await contractInstance.methods
-        .addSupplierDetails(productId, supplierLocation, supplierName)
-        .send({ from: window.ethereum.selectedAddress });
+        .addSupplierDetails(
+          productId,
+          supplierLocation,
+          supDetails.supplierName
+        )
+        .send({ from: walletAddr });
 
-      alert("Ownership is Transeffered and Supplier details added successfully!");
+      alert(
+        "Ownership is Transeffered and Supplier details added successfully!"
+      );
     } catch (error) {
       console.error(
         "Error adding supplier details and transferring ownership:",
@@ -158,82 +178,87 @@ function Supplier() {
 
   return (
     <>
-      <div>
-        <div className="sup-container">
-          <div className="sup-inner-container">
-            <div className="sup-form-1">
-              <label>Choose QR Code Option:</label>
-              <div>
-                <button
-                  onClick={() => setIsScanning(true)}
-                  disabled={!scanActive}
-                >
-                  Scan QR Code
+      {isAuth && (
+        <>
+          <div>
+            <div className="sup-container">
+              <div className="sup-inner-container">
+                <div className="sup-form-1">
+                  <label>Choose QR Code Option:</label>
+                  <div>
+                    <button
+                      onClick={() => setIsScanning(true)}
+                      disabled={!scanActive}
+                    >
+                      Scan QR Code
+                    </button>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleUpload}
+                      disabled={!scanActive}
+                    />
+                  </div>
+                  {isScanning && (
+                    <QrReader
+                      delay={300}
+                      onError={handleError}
+                      onResult={handleScan}
+                      onScan={handleScan}
+                      style={{ width: "100%" }}
+                    />
+                  )}
+                  <div className="man-or-sup">
+                    <label htmlFor="choice">Choose ID Type:</label>
+                    <select
+                      id="choice"
+                      onChange={(e) => setChoice(e.target.value)}
+                      value={choice}
+                    >
+                      <option value="">Select</option>
+                      <option value="manufacturer">Manufacturer ID</option>
+                      <option value="supplier">Supplier ID</option>
+                    </select>
+                    <input
+                      type="text"
+                      value={id}
+                      onChange={(e) => setId(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <button className="add-sup-details" onClick={handleVerify}>
+                  Verify
                 </button>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleUpload}
-                  disabled={!scanActive}
-                />
-              </div>
-              {isScanning && (
-                <QrReader
-                  delay={300}
-                  onError={handleError}
-                  onResult={handleScan}
-                  onScan={handleScan}
-                  style={{ width: "100%" }}
-                />
-              )}
-              <div className="man-or-sup">
-                <label htmlFor="choice">Choose ID Type:</label>
-                <select
-                  id="choice"
-                  onChange={(e) => setChoice(e.target.value)}
-                  value={choice}
-                >
-                  <option value="">Select</option>
-                  <option value="manufacturer">Manufacturer ID</option>
-                  <option value="supplier">Supplier ID</option>
-                </select>
-                <input
-                  type="text"
-                  value={id}
-                  onChange={(e) => setId(e.target.value)}
-                />
+                <div className="error-msg"></div>
+                {verified && (
+                  <div className="sup-form-2">
+                    <label htmlFor="shop-addr">Seller Location:</label>
+                    <select
+                      name="shop-addr"
+                      id="s-addr"
+                      value={supplierLocation}
+                      onChange={(e) => setSupplierLocation(e.target.value)}
+                    >
+                      {sellingLocations.map((location, index) => (
+                        <option key={index} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                    <br />
+                    <button
+                      className="add-sup-details"
+                      onClick={handleAddDetails}
+                    >
+                      Add Details
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-            <button className="add-sup-details" onClick={handleVerify}>
-              Verify
-            </button>
-            <div className="error-msg"></div>
-            {verified && (
-              <div className="sup-form-2">
-                <label htmlFor="shop-name">Supplier Name:</label>
-                <input
-                  type="text"
-                  name="shop-name"
-                  id="s-name"
-                  value={supplierName}
-                  onChange={(e) => setSupplierName(e.target.value)}
-                />
-                <label htmlFor="shop-addr">Supplier Location:</label>
-                <input
-                  type="text"
-                  name="shop-addr"
-                  id="s-addr"
-                  value={supplierLocation}
-                  onChange={(e) => setSupplierLocation(e.target.value)}
-                />
-                <button className="add-sup-details" onClick={handleAddDetails}>
-                  Add Details
-                </button>
-              </div>
-            )}
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 }

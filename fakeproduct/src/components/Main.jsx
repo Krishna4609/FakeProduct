@@ -5,6 +5,7 @@ import Web3 from "web3"; // Import Web3 library
 import ProductRegistryABI from "../contract/ProductRegistry.json";
 import QrCode from "qrcode-reader";
 import { QrReader } from "react-qr-reader";
+import axios from "axios";
 
 function Main() {
   const [toggler, setToggler] = useState(0);
@@ -16,6 +17,9 @@ function Main() {
   const [contractInstance, setContractInstance] = useState(null);
   const [productDetails, setProductDetails] = useState({});
   const [isScanning, setIsScanning] = useState(false);
+
+  const [supplierLocations, setSupplierLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   const handleClick = (state) => {
     setToggler(state);
@@ -38,6 +42,21 @@ function Main() {
       }
     };
     initWeb3();
+  }, []);
+
+  //Customer for fetching supplier location
+  useEffect(() => {
+    const fetchSupplierLocations = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/supplier-locations"
+        ); // Update the URL with your backend server URL
+        setSupplierLocations(response.data);
+      } catch (error) {
+        console.error("Error fetching supplier locations:", error);
+      }
+    };
+    fetchSupplierLocations();
   }, []);
 
   const handleScan = async (data) => {
@@ -93,10 +112,20 @@ function Main() {
   const handleSubmit = () => {
     if (productDetails.supplierLocation === currLocation) {
       alert("It is Genuine Product");
+      setScanActive(true)
     } else {
       alert("Fake Product");
+      setScanActive(true)
     }
   };
+
+  const handleLocationChange = (event) => {
+    setCurrLocation(event.target.value);
+  };
+
+  const handleCancelUpload = (e) =>{
+    setScanActive(true)
+  }
 
   return (
     <>
@@ -130,14 +159,24 @@ function Main() {
             {toggler === 2 ? (
               <>
                 <div className="customer">
-                  <input
-                    value={currLocation}
-                    onChange={(e) => setCurrLocation(e.target.value)}
-                    type="text"
-                    name="serialNo"
-                    id="serial"
-                    placeholder="Enter your current location"
-                  />
+                  <select
+                    value={selectedLocation}
+                    onChange={handleLocationChange}
+                  >
+                    <option value="">Select The current location</option>
+                    {supplierLocations.map((location, index) => (
+                      <option key={index} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+
+                  {currLocation && (
+                    <div className="currLocation">
+                      <p>Selected Location: {currLocation}</p>
+                    </div>
+                  )}
+
                   <div>
                     <button
                       onClick={() => setIsScanning(true)}
@@ -146,20 +185,21 @@ function Main() {
                       Scan QR Code
                     </button>
                     {isScanning && (
-                    <QrReader
-                      delay={300}
-                      onError={handleError}
-                      onResult={handleScan}
-                      onScan={handleScan}
-                      style={{ width: "100%" }}
-                    />
-                  )}
+                      <QrReader
+                        delay={300}
+                        onError={handleError}
+                        onResult={handleScan}
+                        onScan={handleScan}
+                        style={{ width: "100%" }}
+                      />
+                    )}
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handleUpload}
                       disabled={!scanActive}
                     />
+                    <button onClick={handleCancelUpload}>Cancel Upload</button>
                   </div>
 
                   <button className="submit-btn" onClick={handleSubmit}>
