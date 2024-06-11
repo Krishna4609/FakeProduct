@@ -1,0 +1,177 @@
+.maincontainer {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custcontainer {
+  display: flex;
+  height: 60vh;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  /* border: 1px solid black; */
+}
+
+.customer {
+  background-color: rgb(255, 255, 255);
+  padding: 1%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.usform select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: rgba(213, 213, 213, 0.386);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: all 0.3s ease-in-out;
+}
+
+.usform select:hover {
+  box-shadow: rgba(1, 113, 241, 0.5) 0px 2px 5px -1px,
+    rgba(1, 113, 241, 0.49) 0px 1px 3px -1px;
+}
+
+
+
+.usform select option{
+  border: 0;
+  outline: 0;
+  transition: all 0.7s ease-in-out;
+}
+
+.usform  select option:hover{
+   background-color: #45a0dc61;
+}
+
+.customer input[type="text"] {
+  /* .customer input[type="file"] { */
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.customer input[type="file"] {
+  position: absolute;
+  left: 35px;
+  width: 120%;
+  bottom: 20px;
+}
+
+.customer input[type="text"]:focus,
+.customer input[type="file"]:focus {
+  outline: none;
+  border-color: #5c87e0;
+}
+
+/* Customize appearance of file input */
+.customer input[type="file"] {
+  appearance: none;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #5c88e067;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.customer input[type="file"]:hover {
+  background-color: #4367b046;
+}
+.submit-btn {
+  border-radius: 20px;
+  border: 1px solid #00c3ffa5;
+  background-color: #0084ffa5;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+
+.submit-btn:hover {
+  background-color: #4a6db4;
+}
+
+.customer label {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.currLocation p {
+  font-size: 1rem;
+  font-weight: bolder;
+  position: relative;
+  color: black;
+}
+
+.overlay1 {
+  text-align: center;
+  width: 50%;
+  background: -webkit-linear-gradient(to right, #0162c4b3, #00c3ffa5);
+  background: linear-gradient(to right, #0162c4b3, #00c3ffa5);
+}
+
+.prodstatus {
+
+  width: 50%;
+  height: 20%;
+}
+.fakeorreal img {
+  width: 40%;
+  height: 50%;
+}
+
+.scanbtn {
+  padding: 2%;
+  margin-right: 2%;
+  border-radius: 7px;
+}
+
+.scanbtn:disabled {
+  border: 0;
+  background-color: rgba(128, 128, 128, 0.262);
+}
+
+.custombutton1 {
+  width: 130%;
+  padding: 10%;
+  border-radius: 7px;
+  margin-left: 35%;
+}
+
+.custombutton1:disabled {
+  border: 0;
+  background-color: rgba(128, 128, 128, 0.262);
+}
+
+.rstbtn {
+  border-radius: 7px;
+  margin-left: 25%;
+}
+
+.qrimage2 {
+  padding: 7%;
+  margin-left: 22%;
+}
+
+.qrreader {
+  width: 43%;
+  margin-left: 30%;
+}

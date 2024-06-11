@@ -5,83 +5,70 @@
 }
 
 body {
-  position: relative;
-  height: 100vh;
-  background-image: url("../images/milad-fakurian-wNsHBf_bTBo-unsplash.jpg");
-  background-size: contain;
-  background-repeat: round;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("../images/milad-fakurian-wNsHBf_bTBo-unsplash.jpg");
-  background-size: contain;
-  background-repeat: round;
-  filter: blur(6px);
-  z-index: -1; 
-}
-
-.container {
-  position: relative;
-  top: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.main {
-  display: grid;
-  grid-template-columns: repeat(2, 400px);
-  column-gap: 170px;
-  padding: 200px;
-}
-
-.startbtn {
-  border: 0;
-  padding: 20px 40px;
-  background: linear-gradient(
-    to right,
-    rgba(135, 207, 235, 0.521),
-    rgba(255, 0, 119, 0.679)
-  );
-  border-radius: 5px;
-  font-size: large;
-  color: white;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: background 0.7s ease-in-out, color 0.4s ease-in-out;
-}
-
-.startbtn:hover {
-  background: linear-gradient(
-    to right,
-    rgba(255, 0, 119, 0.679),
-    rgba(135, 207, 235, 0.521)
-  );
-  color: black;
-}
-
-
-.about {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: large;
-  letter-spacing: 0.6px;
-  text-align: justify;
-  position: relative;
-  left: 70px;
-  bottom: 35px;
-  width: 550px;
-  color: white;
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+  /* height: 100vh; */
+  background-image: url("../images/3428144_60241.jpg");
+  background-size: cover;
+  background-repeat: no-repeat; 
 }
 
 .pro-nav {
   display: flex;
+  justify-content: flex-end;
+}
+.proj-title {
+  font-size: 1.7rem;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 80vh;
+  margin: 2%;
+}
+
+.intro {
+  width: 60%;
+  display: flex;
   justify-content: center;
-  color: white;
+  padding: 10% 12% 8% 2%;
+  margin-right: 10%;
+}
+
+.intro p{
+  line-height: 200%;
+  text-align: justify;
+}
+
+.users {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10%;
+  margin-right: 5%;
+  margin-top: 2.5%;
+}
+
+.users div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10%;
+  padding: 2%;
+  width: 50%;
+  margin-left: 22%;
+  /* border-radius: 20%; */
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.users div:hover {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+}
+
+.manu {
 }

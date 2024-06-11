@@ -7,6 +7,7 @@ import ProductRegistryABI from "../contract/ProductRegistry.json";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { isAuthenticated } from "../globalRoutes/authUtil";
+import Nav from "./Navbar"
 
 function Manufacturer() {
   const location = useLocation();
@@ -84,6 +85,7 @@ function Manufacturer() {
         .send({ from: walletAddr });
 
       alert("Product added successfully!");
+      setQrPressed(1)
     } catch (error) {
       console.error("Error adding product:", error);
     }
@@ -93,7 +95,7 @@ function Manufacturer() {
     if (qrCodeRef.current) {
       const canvas = qrCodeRef.current.getElementsByTagName("canvas")[0];
       canvas.toBlob((blob) => {
-        saveAs(blob, `${serialNumber}.png`);
+        saveAs(blob, `${productName}${serialNumber}.png`);
       });
     }
   };
@@ -107,7 +109,7 @@ function Manufacturer() {
     }
     else {
       alert("Please LogIn Using the portal");
-      navigate("/main");
+      navigate("/");
     }
   }, []);
 
@@ -124,11 +126,12 @@ function Manufacturer() {
     <>
       {isAuth && (
         <>
+        <Nav/>
           <div className="man-container">
             <div className="inner-container">
               <div className="inner-container1">
                 <div className="serial-container">
-                  <p>Serial Number</p>
+                
                   <button
                     className="serial-gen-btn"
                     onClick={handleGenSerial}
@@ -137,7 +140,7 @@ function Manufacturer() {
                     Generate Serial Number
                   </button>
                 </div>
-                <div className="serial-number">{serialNumber}</div>
+                <div className="serial-number">Serial Number: {serialNumber}</div>
                 <div className="prod-details">
                   <label htmlFor="prod-name">Name of Product</label>
                   <input

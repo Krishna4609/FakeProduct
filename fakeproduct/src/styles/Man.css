@@ -3,23 +3,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 90vh;
   text-align: center;
 }
 
 .inner-container {
   display: flex;
-  padding: 60px;
-  height: 600px;
+  padding: 2%;
+  height: 90%;
   border-radius: 30px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 }
 
 .serial-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 1%;
 }
 
 .serial-container p {
@@ -60,14 +62,14 @@
   width: 200px;
 }
 
-.prod-details input:focus{
+.prod-details input:focus {
   outline: 0;
 }
 
-.prod-details .text-box{
+.prod-details .text-box {
   padding: 15px;
 }
-.prod-details .text-box:focus{
+.prod-details .text-box:focus {
   outline: 0;
 }
 
@@ -126,4 +128,3 @@
 .download-btn:hover {
   background-color: rgba(135, 207, 235, 0.521);
 }
-

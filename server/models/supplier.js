@@ -6,7 +6,7 @@ const SupplierSchema = new Schema({
   password: { type: String, required: true },
   walletAddr: { type: String, required: true },
   supplierId: { type: String, unique: true },
-  supplierName: { type: String, required: true },
+  supplierName: { type: String},
   sellingLocations: [{ type: String }] // Array of selling locations
 });
 

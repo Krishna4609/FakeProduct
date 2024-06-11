@@ -14,7 +14,9 @@ mongoose.connect("mongodb://127.0.0.1:27017/fakeproduct");
 // Routes for Manufacturer Registration
 app.post("/manufacturersign", async (req, res) => {
   try {
-    const existingUser = await ManufacturerModel.findOne({ username: req.body.username });
+    const existingUser = await ManufacturerModel.findOne({
+      username: req.body.username,
+    });
     if (existingUser) {
       return res.json("User Already exists. Please try again.");
     }
@@ -22,29 +24,33 @@ app.post("/manufacturersign", async (req, res) => {
     const manufacturer = await ManufacturerModel.create(req.body);
     res.json({ manufacturerId: manufacturer.manufacturerId });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.json("Enter field");
   }
 });
 
 // Routes for Supplier Registration
 app.post("/suppliersign", async (req, res) => {
   try {
-    const existingUser = await SupplierModel.findOne({ username: req.body.username });
+    const existingUser = await SupplierModel.findOne({
+      username: req.body.username,
+    });
     if (existingUser) {
       return res.json("User Already exists. Please try again.");
     }
 
     const supplier = await SupplierModel.create(req.body);
-    res.json({ supplierId: supplier.supplierId }); 
+    res.json({ supplierId: supplier.supplierId });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.json("Enter field");
   }
 });
 
 // Routes for Manufacturer Login
 app.post("/manufacturer", async (req, res) => {
   try {
-    const user = await ManufacturerModel.findOne({ username: req.body.username });
+    const user = await ManufacturerModel.findOne({
+      username: req.body.username,
+    });
     if (!user) {
       return res.json("No user Found");
     }
@@ -77,61 +83,61 @@ app.post("/supplier", async (req, res) => {
   }
 });
 
-app.post('/supDetails', async (req,res)=>{
+app.post("/supDetails", async (req, res) => {
   try {
-    const user = await SupplierModel.findOne({username: req.body.username})
-    if(user){
-      res.json(user)
-    }
-    else{
-      res.json("Invalid Request!")
+    const user = await SupplierModel.findOne({ username: req.body.username });
+    if (user) {
+      res.json(user);
+    } else {
+      res.json("Invalid Request!");
     }
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-})
+});
 
-app.post('/manDetails', async (req,res)=>{
+app.post("/manDetails", async (req, res) => {
   try {
-    const user = await ManufacturerModel.findOne({username: req.body.username})
-    if(user){
-      res.json(user)
-    }
-    else{
-      res.json("Invalid Request!")
+    const user = await ManufacturerModel.findOne({
+      username: req.body.username,
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      res.json("Invalid Request!");
     }
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-})
+});
 
-app.post('/manById', async (req,res)=>{
-  try{
-    const user = await ManufacturerModel.findOne({manufacturerId:req.body.id})
-    if(user){
-      res.json(user)
+app.post("/manById", async (req, res) => {
+  try {
+    const user = await ManufacturerModel.findOne({
+      manufacturerId: req.body.id,
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      res.json("Invalid Manufacturer ID");
     }
-    else{
-      res.json("Invalid Manufacturer ID")
-    }
-  }catch(err){
-    res.json(err)
+  } catch (err) {
+    res.json(err);
   }
-})
+});
 
-app.post('/supById', async (req,res)=>{
-  try{
-    const user = await SupplierModel.findOne({supplierId:req.body.id})
-    if(user){
-      res.json(user)
+app.post("/supById", async (req, res) => {
+  try {
+    const user = await SupplierModel.findOne({ supplierId: req.body.id });
+    if (user) {
+      res.json(user);
+    } else {
+      res.json("Invalid Supplier ID");
     }
-    else{
-      res.json("Invalid Supplier ID")
-    }
-  }catch(err){
-    res.json(err)
+  } catch (err) {
+    res.json(err);
   }
-})
+});
 
 // Route to fetch unique selling locations of all suppliers
 app.get("/supplier-locations", async (req, res) => {
@@ -149,6 +155,31 @@ app.get("/supplier-locations", async (req, res) => {
   }
 });
 
+// Route to add a location to sellingLocations array for a specific supplier
+app.post("/add-location", async (req, res) => {
+  try {
+    const {username} = req.body.username
+    let supplier = await SupplierModel.findOne({
+      username: req.body.username,
+    });
+
+    if (!supplier) {
+      return res.status(404).json({ error: "Supplier not found" });
+    }
+    if (supplier.sellingLocations.includes(req.body.location)) {
+      return res
+        .status(400)
+        .json({ error: "Location already exists for this supplier" });
+    }
+    supplier = await SupplierModel.findOneAndUpdate(
+      { username: req.body.username },
+      { $push: { sellingLocations: req.body.location } },
+    );
+    res.json({ message: "Location added successfully", supplier });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.listen(port, () => {
   console.log("Server is running on port", port);
